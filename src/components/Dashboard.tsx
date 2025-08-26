@@ -5,6 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Trophy, Target, Flame, Clock } from "lucide-react";
 import { Challenge, UserProgress } from "@/types/fitness";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface DashboardProps {
   challenges: Challenge[];
@@ -15,6 +16,7 @@ interface DashboardProps {
 export const Dashboard = ({ challenges, userProgress, onSelectChallenge }: DashboardProps) => {
   const [currentStreak, setCurrentStreak] = useState(7);
   const [totalAchievements, setTotalAchievements] = useState(12);
+  const { t } = useLanguage();
 
   const activeChallenges = challenges.filter(challenge => 
     userProgress.some(progress => progress.challengeId === challenge.id && progress.isActive)
@@ -41,7 +43,7 @@ export const Dashboard = ({ challenges, userProgress, onSelectChallenge }: Dashb
           <CardContent className="p-4 text-center">
             <Flame className="w-8 h-8 mx-auto mb-2" />
             <div className="text-2xl font-bold">{currentStreak}</div>
-            <div className="text-sm opacity-90">Day Streak</div>
+            <div className="text-sm opacity-90">{t('dashboard.dayStreak')}</div>
           </CardContent>
         </Card>
         
@@ -49,7 +51,7 @@ export const Dashboard = ({ challenges, userProgress, onSelectChallenge }: Dashb
           <CardContent className="p-4 text-center">
             <Target className="w-8 h-8 mx-auto mb-2" />
             <div className="text-2xl font-bold">{activeChallenges.length}</div>
-            <div className="text-sm opacity-90">Active Goals</div>
+            <div className="text-sm opacity-90">{t('dashboard.activeGoals')}</div>
           </CardContent>
         </Card>
         
@@ -57,7 +59,7 @@ export const Dashboard = ({ challenges, userProgress, onSelectChallenge }: Dashb
           <CardContent className="p-4 text-center">
             <Trophy className="w-8 h-8 mx-auto mb-2" />
             <div className="text-2xl font-bold">{totalAchievements}</div>
-            <div className="text-sm opacity-90">Achievements</div>
+            <div className="text-sm opacity-90">{t('dashboard.achievements')}</div>
           </CardContent>
         </Card>
         
@@ -65,7 +67,7 @@ export const Dashboard = ({ challenges, userProgress, onSelectChallenge }: Dashb
           <CardContent className="p-4 text-center">
             <Clock className="w-8 h-8 mx-auto mb-2" />
             <div className="text-2xl font-bold">{calculateOverallProgress()}%</div>
-            <div className="text-sm opacity-90">Overall Progress</div>
+            <div className="text-sm opacity-90">{t('dashboard.overallProgress')}</div>
           </CardContent>
         </Card>
       </div>
@@ -75,15 +77,15 @@ export const Dashboard = ({ challenges, userProgress, onSelectChallenge }: Dashb
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Target className="w-5 h-5 text-primary" />
-            Active Challenges
+            {t('dashboard.activeChallenges')}
           </CardTitle>
         </CardHeader>
         <CardContent>
           {activeChallenges.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">
               <Trophy className="w-12 h-12 mx-auto mb-4 opacity-50" />
-              <p>No active challenges yet!</p>
-              <p className="text-sm">Start your fitness journey by selecting a challenge.</p>
+              <p>{t('dashboard.noChallenges')}</p>
+              <p className="text-sm">{t('dashboard.noChallengesDesc')}</p>
             </div>
           ) : (
             <div className="space-y-4">
@@ -105,20 +107,20 @@ export const Dashboard = ({ challenges, userProgress, onSelectChallenge }: Dashb
                         <p className="text-sm text-muted-foreground">{challenge.description}</p>
                       </div>
                       <Badge variant="secondary" className="ml-2">
-                        {challenge.category}
+                        {t(`category.${challenge.category}` as any) || challenge.category}
                       </Badge>
                     </div>
                     
                     <div className="space-y-2">
                       <div className="flex justify-between text-sm">
-                        <span>Progress</span>
+                        <span>{t('dashboard.progress')}</span>
                         <span className="font-medium">
-                          {progress?.currentValue || 0} / {challenge.targetValue} {challenge.unit}
+                          {progress?.currentValue || 0} / {challenge.targetValue} {t(`unit.${challenge.unit}` as any) || challenge.unit}
                         </span>
                       </div>
                       <Progress value={progressPercentage} className="h-2" />
                       <div className="text-right text-sm font-medium text-primary">
-                        {progressPercentage}% Complete
+                        {progressPercentage}% {t('dashboard.complete')}
                       </div>
                     </div>
                   </div>

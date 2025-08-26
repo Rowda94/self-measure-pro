@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Home, List, Trophy, User } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 interface NavigationProps {
   currentView: string;
@@ -7,11 +9,13 @@ interface NavigationProps {
 }
 
 export const Navigation = ({ currentView, onViewChange }: NavigationProps) => {
+  const { t } = useLanguage();
+  
   const navItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: Home },
-    { id: 'challenges', label: 'Challenges', icon: List },
-    { id: 'achievements', label: 'Achievements', icon: Trophy },
-    { id: 'profile', label: 'Profile', icon: User },
+    { id: 'dashboard', label: t('nav.dashboard'), icon: Home },
+    { id: 'challenges', label: t('nav.challenges'), icon: List },
+    { id: 'achievements', label: t('nav.achievements'), icon: Trophy },
+    { id: 'profile', label: t('nav.profile'), icon: User },
   ];
 
   return (
@@ -23,8 +27,8 @@ export const Navigation = ({ currentView, onViewChange }: NavigationProps) => {
               <Trophy className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-bold">FitTracker Pro</h1>
-              <p className="text-xs text-muted-foreground">Quantified Self</p>
+              <h1 className="text-xl font-bold">{t('nav.appName')}</h1>
+              <p className="text-xs text-muted-foreground">{t('nav.appSubtitle')}</p>
             </div>
           </div>
 
@@ -48,10 +52,12 @@ export const Navigation = ({ currentView, onViewChange }: NavigationProps) => {
                 </Button>
               );
             })}
+            <LanguageSwitcher />
           </div>
 
           {/* Mobile Navigation */}
-          <div className="flex md:hidden">
+          <div className="flex md:hidden items-center gap-2">
+            <LanguageSwitcher />
             <Button variant="ghost" size="sm">
               <Trophy className="w-5 h-5" />
             </Button>

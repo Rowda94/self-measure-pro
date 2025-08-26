@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search, Clock, Trophy, Users, Target } from "lucide-react";
 import { Challenge, UserProgress } from "@/types/fitness";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface ChallengeListProps {
   challenges: Challenge[];
@@ -22,6 +23,7 @@ export const ChallengeList = ({
 }: ChallengeListProps) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const { t } = useLanguage();
 
   const categories = Array.from(new Set(challenges.map(c => c.category)));
 
@@ -54,7 +56,7 @@ export const ChallengeList = ({
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
               <Input
-                placeholder="Search challenges..."
+                placeholder={t('challenges.searchPlaceholder')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10"
@@ -65,9 +67,11 @@ export const ChallengeList = ({
                 <SelectValue placeholder="Category" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Categories</SelectItem>
+                <SelectItem value="all">{t('challenges.allCategories')}</SelectItem>
                 {categories.map(category => (
-                  <SelectItem key={category} value={category}>{category}</SelectItem>
+                  <SelectItem key={category} value={category}>
+                    {t(`category.${category}` as any) || category}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -95,12 +99,14 @@ export const ChallengeList = ({
                   {challenge.title}
                 </CardTitle>
                 <div className="flex items-center gap-2">
-                  <Badge variant="outline">{challenge.category}</Badge>
+                  <Badge variant="outline">
+                    {t(`category.${challenge.category}` as any) || challenge.category}
+                  </Badge>
                   <Badge 
                     variant="secondary" 
                     className={`text-white ${getDifficultyColor(challenge.difficulty)}`}
                   >
-                    {challenge.difficulty}
+                    {t(`difficulty.${challenge.difficulty}` as any) || challenge.difficulty}
                   </Badge>
                 </div>
               </CardHeader>
@@ -113,21 +119,21 @@ export const ChallengeList = ({
                 <div className="flex items-center justify-between text-sm text-muted-foreground">
                   <div className="flex items-center gap-1">
                     <Clock className="w-4 h-4" />
-                    <span>{challenge.duration} days</span>
+                    <span>{challenge.duration} {t('challenges.days')}</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <Trophy className="w-4 h-4" />
-                    <span>{challenge.targetValue} {challenge.unit}</span>
+                    <span>{challenge.targetValue} {t(`unit.${challenge.unit}` as any) || challenge.unit}</span>
                   </div>
                 </div>
 
                 <div className="flex items-center justify-between text-sm text-muted-foreground">
                   <div className="flex items-center gap-1">
                     <Users className="w-4 h-4" />
-                    <span>{Math.floor(Math.random() * 1000) + 100} participants</span>
+                    <span>{Math.floor(Math.random() * 1000) + 100} {t('challenges.participants')}</span>
                   </div>
                   <div className="font-medium text-primary">
-                    {challenge.points} points
+                    {challenge.points} {t('challenges.points')}
                   </div>
                 </div>
 
@@ -142,7 +148,7 @@ export const ChallengeList = ({
                   }}
                   disabled={enrolled}
                 >
-                  {enrolled ? 'Enrolled ✓' : 'Join Challenge'}
+                  {enrolled ? t('challenges.enrolled') : t('challenges.joinChallenge')}
                 </Button>
               </CardContent>
             </Card>
@@ -154,9 +160,9 @@ export const ChallengeList = ({
         <Card className="shadow-card">
           <CardContent className="text-center py-12">
             <Target className="w-16 h-16 mx-auto mb-4 text-muted-foreground opacity-50" />
-            <h3 className="text-lg font-semibold mb-2">No challenges found</h3>
+            <h3 className="text-lg font-semibold mb-2">{t('challenges.noChallengesFound')}</h3>
             <p className="text-muted-foreground">
-              Try adjusting your search criteria or browse all categories.
+              {t('challenges.noChallengesDesc')}
             </p>
           </CardContent>
         </Card>

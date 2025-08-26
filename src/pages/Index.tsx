@@ -4,13 +4,18 @@ import { Dashboard } from "@/components/Dashboard";
 import { ChallengeList } from "@/components/ChallengeList";
 import { ChallengeDetail } from "@/components/ChallengeDetail";
 import { mockChallenges, mockUserProgress } from "@/data/mockData";
+import { germanChallenges } from "@/data/germanChallenges";
 import { Challenge, UserProgress, ProgressEntry } from "@/types/fitness";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Index = () => {
   const [currentView, setCurrentView] = useState('dashboard');
   const [selectedChallenge, setSelectedChallenge] = useState<Challenge | null>(null);
-  const [challenges] = useState<Challenge[]>(mockChallenges);
   const [userProgress, setUserProgress] = useState<UserProgress[]>(mockUserProgress);
+  const { language, t } = useLanguage();
+
+  // Use German challenges if language is German, otherwise use English challenges
+  const challenges = language === 'de' ? germanChallenges : mockChallenges;
 
   const handleEnrollChallenge = (challenge: Challenge) => {
     const newProgress: UserProgress = {
@@ -97,15 +102,15 @@ const Index = () => {
       case 'achievements':
         return (
           <div className="text-center py-16">
-            <h2 className="text-2xl font-bold mb-4">Achievements</h2>
-            <p className="text-muted-foreground">Coming soon! Unlock badges and trophies as you complete challenges.</p>
+            <h2 className="text-2xl font-bold mb-4">{t('achievements.title')}</h2>
+            <p className="text-muted-foreground">{t('achievements.desc')}</p>
           </div>
         );
       case 'profile':
         return (
           <div className="text-center py-16">
-            <h2 className="text-2xl font-bold mb-4">Profile</h2>
-            <p className="text-muted-foreground">Coming soon! Manage your profile and view detailed statistics.</p>
+            <h2 className="text-2xl font-bold mb-4">{t('profile.title')}</h2>
+            <p className="text-muted-foreground">{t('profile.desc')}</p>
           </div>
         );
       default:

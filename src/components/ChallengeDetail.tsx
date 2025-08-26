@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { ArrowLeft, Trophy, Calendar, Target, TrendingUp, Plus } from "lucide-react";
 import { Challenge, UserProgress, ProgressEntry } from "@/types/fitness";
 import { toast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface ChallengeDetailProps {
   challenge: Challenge;
@@ -25,6 +26,7 @@ export const ChallengeDetail = ({
   const [logValue, setLogValue] = useState("");
   const [logNote, setLogNote] = useState("");
   const [showLogForm, setShowLogForm] = useState(false);
+  const { t } = useLanguage();
 
   const progressPercentage = userProgress 
     ? Math.round((userProgress.currentValue / challenge.targetValue) * 100)
@@ -34,8 +36,8 @@ export const ChallengeDetail = ({
     const value = parseFloat(logValue);
     if (isNaN(value) || value <= 0) {
       toast({
-        title: "Invalid Input",
-        description: "Please enter a valid positive number.",
+        title: t('toast.invalidInput'),
+        description: t('toast.invalidInputDesc'),
         variant: "destructive"
       });
       return;
@@ -47,8 +49,8 @@ export const ChallengeDetail = ({
     setShowLogForm(false);
     
     toast({
-      title: "Progress Logged!",
-      description: `Added ${value} ${challenge.unit} to your progress.`,
+      title: t('toast.progressLogged'),
+      description: `${t('toast.progressLoggedDesc')} ${value} ${t(`unit.${challenge.unit}` as any) || challenge.unit} ${t('toast.toYourProgress')}`,
     });
   };
 
@@ -79,7 +81,9 @@ export const ChallengeDetail = ({
         </Button>
         <div>
           <h1 className="text-2xl font-bold">{challenge.title}</h1>
-          <p className="text-muted-foreground">{challenge.category} Challenge</p>
+          <p className="text-muted-foreground">
+            {t(`category.${challenge.category}` as any) || challenge.category} Challenge
+          </p>
         </div>
       </div>
 
@@ -95,29 +99,33 @@ export const ChallengeDetail = ({
             <div className="text-center">
               <Trophy className="w-8 h-8 mx-auto mb-2 text-primary" />
               <div className="text-2xl font-bold">{challenge.points}</div>
-              <div className="text-sm text-muted-foreground">Points</div>
+              <div className="text-sm text-muted-foreground">{t('detail.points')}</div>
             </div>
             
             <div className="text-center">
               <Calendar className="w-8 h-8 mx-auto mb-2 text-primary" />
               <div className="text-2xl font-bold">{challenge.duration}</div>
-              <div className="text-sm text-muted-foreground">Days</div>
+              <div className="text-sm text-muted-foreground">{t('detail.days')}</div>
             </div>
             
             <div className="text-center">
               <Target className="w-8 h-8 mx-auto mb-2 text-primary" />
               <div className="text-2xl font-bold">{challenge.targetValue}</div>
-              <div className="text-sm text-muted-foreground">{challenge.unit}</div>
+              <div className="text-sm text-muted-foreground">
+                {t(`unit.${challenge.unit}` as any) || challenge.unit}
+              </div>
             </div>
           </div>
 
           <div className="flex items-center gap-2 mb-4">
-            <Badge variant="outline">{challenge.category}</Badge>
+            <Badge variant="outline">
+              {t(`category.${challenge.category}` as any) || challenge.category}
+            </Badge>
             <Badge 
               variant="secondary" 
               className={`text-white ${getDifficultyColor(challenge.difficulty)}`}
             >
-              {challenge.difficulty}
+              {t(`difficulty.${challenge.difficulty}` as any) || challenge.difficulty}
             </Badge>
           </div>
 
@@ -133,7 +141,7 @@ export const ChallengeDetail = ({
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <TrendingUp className="w-5 h-5 text-primary" />
-                Your Progress
+                {t('detail.yourProgress')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -142,15 +150,15 @@ export const ChallengeDetail = ({
                   {progressPercentage}%
                 </div>
                 <div className="text-muted-foreground">
-                  {userProgress.currentValue} / {challenge.targetValue} {challenge.unit}
+                  {userProgress.currentValue} / {challenge.targetValue} {t(`unit.${challenge.unit}` as any) || challenge.unit}
                 </div>
               </div>
               
               <Progress value={progressPercentage} className="h-3" />
               
               <div className="flex justify-between text-sm text-muted-foreground">
-                <span>Started: {userProgress.startDate.toLocaleDateString()}</span>
-                <span>Streak: {userProgress.streak} days</span>
+                <span>{t('detail.started')}: {userProgress.startDate.toLocaleDateString()}</span>
+                <span>{t('detail.streak')}: {userProgress.streak} {t('challenges.days')}</span>
               </div>
 
               <Button 
@@ -158,7 +166,7 @@ export const ChallengeDetail = ({
                 onClick={() => setShowLogForm(!showLogForm)}
               >
                 <Plus className="w-4 h-4 mr-2" />
-                Log Progress
+                {t('detail.logProgress')}
               </Button>
 
               {showLogForm && (
@@ -166,14 +174,14 @@ export const ChallengeDetail = ({
                   <div>
                     <Input
                       type="number"
-                      placeholder={`Enter ${challenge.unit}...`}
+                      placeholder={`${t('detail.enterValue')} ${t(`unit.${challenge.unit}` as any) || challenge.unit}...`}
                       value={logValue}
                       onChange={(e) => setLogValue(e.target.value)}
                     />
                   </div>
                   <div>
                     <Textarea
-                      placeholder="Add a note (optional)..."
+                      placeholder={t('detail.addNote')}
                       value={logNote}
                       onChange={(e) => setLogNote(e.target.value)}
                       rows={3}
@@ -184,13 +192,13 @@ export const ChallengeDetail = ({
                       className="flex-1 bg-gradient-primary text-white"
                       onClick={handleLogProgress}
                     >
-                      Save Entry
+                      {t('detail.saveEntry')}
                     </Button>
                     <Button 
                       variant="outline" 
                       onClick={() => setShowLogForm(false)}
                     >
-                      Cancel
+                      {t('detail.cancel')}
                     </Button>
                   </div>
                 </div>
@@ -201,14 +209,14 @@ export const ChallengeDetail = ({
           {/* Recent Entries */}
           <Card className="shadow-card">
             <CardHeader>
-              <CardTitle>Recent Entries</CardTitle>
+              <CardTitle>{t('detail.recentEntries')}</CardTitle>
             </CardHeader>
             <CardContent>
               {recentEntries.length === 0 ? (
                 <div className="text-center py-8 text-muted-foreground">
                   <Calendar className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                  <p>No entries yet</p>
-                  <p className="text-sm">Start logging your progress!</p>
+                  <p>{t('detail.noEntries')}</p>
+                  <p className="text-sm">{t('detail.noEntriesDesc')}</p>
                 </div>
               ) : (
                 <div className="space-y-3">
@@ -219,7 +227,7 @@ export const ChallengeDetail = ({
                     >
                       <div>
                         <div className="font-medium">
-                          {entry.value} {challenge.unit}
+                          {entry.value} {t(`unit.${challenge.unit}` as any) || challenge.unit}
                         </div>
                         <div className="text-sm text-muted-foreground">
                           {new Date(entry.date).toLocaleDateString()}
@@ -244,15 +252,15 @@ export const ChallengeDetail = ({
         <Card className="shadow-card border-2 border-primary/20">
           <CardContent className="text-center py-8">
             <Trophy className="w-16 h-16 mx-auto mb-4 text-primary" />
-            <h3 className="text-xl font-semibold mb-2">Ready to Start?</h3>
+            <h3 className="text-xl font-semibold mb-2">{t('detail.readyToStart')}</h3>
             <p className="text-muted-foreground mb-6">
-              Join this challenge and start tracking your progress towards your fitness goals.
+              {t('detail.readyToStartDesc')}
             </p>
             <Button 
               size="lg"
               className="bg-gradient-primary text-white border-0 px-8"
             >
-              Join Challenge
+              {t('challenges.joinChallenge')}
             </Button>
           </CardContent>
         </Card>
