@@ -5,6 +5,7 @@ import { Dashboard } from "@/components/Dashboard";
 import { ChallengeList } from "@/components/ChallengeList";
 import { ChallengeDetail } from "@/components/ChallengeDetail";
 import { Profile } from "@/components/Profile";
+import { Achievements } from "@/components/Achievements";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { mockChallenges, mockUserProgress } from "@/data/mockData";
@@ -128,10 +129,7 @@ const Index = () => {
         ) : null;
       case 'achievements':
         return (
-          <div className="text-center py-16">
-            <h2 className="text-2xl font-bold mb-4">{t('achievements.title')}</h2>
-            <p className="text-muted-foreground">{t('achievements.desc')}</p>
-          </div>
+          <Achievements userProgress={userProgress} />
         );
       case 'profile':
         return user ? (
