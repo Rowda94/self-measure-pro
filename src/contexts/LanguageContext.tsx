@@ -59,6 +59,38 @@ const translations = {
     'detail.addNote': 'Add a note (optional)...',
     'detail.enterValue': 'Enter',
     
+    // Auth
+    'auth.welcome': 'Welcome',
+    'auth.subtitle': 'Sign in to track your fitness goals',
+    'auth.signIn': 'Sign In',
+    'auth.signUp': 'Sign Up',
+    'auth.email': 'Email',
+    'auth.password': 'Password',
+    'auth.displayName': 'Display Name',
+    'auth.checkEmail': 'Check your email for the confirmation link!',
+    'auth.invalidCredentials': 'Invalid email or password',
+    'auth.signOut': 'Sign Out',
+    
+    // Profile
+    'profile.editProfile': 'Edit Profile',
+    'profile.displayName': 'Display Name',
+    'profile.bio': 'Bio',
+    'profile.bioPlaceholder': 'Tell us about yourself...',
+    'profile.noBio': 'No bio available',
+    'profile.memberSince': 'Member since',
+    'profile.accountSettings': 'Account Settings',
+    'profile.saved': 'Profile Updated',
+    'profile.savedDescription': 'Your profile has been successfully updated.',
+    'profile.saveError': 'Failed to update profile',
+    'profile.active': 'Active',
+    
+    // Common
+    'common.save': 'Save',
+    'common.cancel': 'Cancel',
+    'common.loading': 'Loading...',
+    'common.saving': 'Saving...',
+    'common.error': 'Error',
+    
     // Toast Messages
     'toast.invalidInput': 'Invalid Input',
     'toast.invalidInputDesc': 'Please enter a valid positive number.',
@@ -141,6 +173,38 @@ const translations = {
     'detail.cancel': 'Abbrechen',
     'detail.addNote': 'Notiz hinzufügen (optional)...',
     'detail.enterValue': 'Eingabe',
+    
+    // Auth
+    'auth.welcome': 'Willkommen',
+    'auth.subtitle': 'Melden Sie sich an, um Ihre Fitnessziele zu verfolgen',
+    'auth.signIn': 'Anmelden',
+    'auth.signUp': 'Registrieren',
+    'auth.email': 'E-Mail',
+    'auth.password': 'Passwort',
+    'auth.displayName': 'Anzeigename',
+    'auth.checkEmail': 'Überprüfen Sie Ihre E-Mail für den Bestätigungslink!',
+    'auth.invalidCredentials': 'Ungültige E-Mail oder Passwort',
+    'auth.signOut': 'Abmelden',
+    
+    // Profile
+    'profile.editProfile': 'Profil bearbeiten',
+    'profile.displayName': 'Anzeigename',
+    'profile.bio': 'Biografie',
+    'profile.bioPlaceholder': 'Erzählen Sie uns etwas über sich...',
+    'profile.noBio': 'Keine Biografie verfügbar',
+    'profile.memberSince': 'Mitglied seit',
+    'profile.accountSettings': 'Kontoeinstellungen',
+    'profile.saved': 'Profil aktualisiert',
+    'profile.savedDescription': 'Ihr Profil wurde erfolgreich aktualisiert.',
+    'profile.saveError': 'Profil konnte nicht aktualisiert werden',
+    'profile.active': 'Aktiv',
+    
+    // Common
+    'common.save': 'Speichern',
+    'common.cancel': 'Abbrechen',
+    'common.loading': 'Lädt...',
+    'common.saving': 'Speichert...',
+    'common.error': 'Fehler',
     
     // Toast Messages
     'toast.invalidInput': 'Ungültige Eingabe',

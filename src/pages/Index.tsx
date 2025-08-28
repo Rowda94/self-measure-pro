@@ -1,21 +1,48 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Navigation } from "@/components/Navigation";
 import { Dashboard } from "@/components/Dashboard";
 import { ChallengeList } from "@/components/ChallengeList";
 import { ChallengeDetail } from "@/components/ChallengeDetail";
+import { Profile } from "@/components/Profile";
+import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
 import { mockChallenges, mockUserProgress } from "@/data/mockData";
 import { germanChallenges } from "@/data/germanChallenges";
 import { Challenge, UserProgress, ProgressEntry } from "@/types/fitness";
 import { useLanguage } from "@/contexts/LanguageContext";
+import type { User, Session } from '@supabase/supabase-js';
 
 const Index = () => {
   const [currentView, setCurrentView] = useState('dashboard');
   const [selectedChallenge, setSelectedChallenge] = useState<Challenge | null>(null);
   const [userProgress, setUserProgress] = useState<UserProgress[]>(mockUserProgress);
+  const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
+  const [loading, setLoading] = useState(true);
   const { language, t } = useLanguage();
+  const navigate = useNavigate();
 
   // Use German challenges if language is German, otherwise use English challenges
   const challenges = language === 'de' ? germanChallenges : mockChallenges;
+
+  useEffect(() => {
+    // Set up auth state listener
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+      setLoading(false);
+    });
+
+    // Check for existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+      setLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const handleEnrollChallenge = (challenge: Challenge) => {
     const newProgress: UserProgress = {
@@ -107,7 +134,9 @@ const Index = () => {
           </div>
         );
       case 'profile':
-        return (
+        return user ? (
+          <Profile user={user} />
+        ) : (
           <div className="text-center py-16">
             <h2 className="text-2xl font-bold mb-4">{t('profile.title')}</h2>
             <p className="text-muted-foreground">{t('profile.desc')}</p>
@@ -117,6 +146,37 @@ const Index = () => {
         return null;
     }
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-subtle flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p>{t('common.loading')}</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-gradient-subtle flex items-center justify-center p-4">
+        <div className="text-center max-w-md">
+          <div className="w-16 h-16 bg-gradient-primary rounded-lg flex items-center justify-center mx-auto mb-6">
+            <span className="text-2xl">🏃‍♂️</span>
+          </div>
+          <h1 className="text-3xl font-bold mb-4">{t('nav.appName')}</h1>
+          <p className="text-muted-foreground mb-6">{t('nav.appSubtitle')}</p>
+          <Button 
+            onClick={() => navigate('/auth')} 
+            className="bg-gradient-primary text-white border-0"
+          >
+            {t('auth.signIn')}
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
