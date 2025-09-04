@@ -44,21 +44,22 @@ export const Profile = ({ user }: ProfileProps) => {
 
   const fetchProfile = async () => {
     try {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('user_id', user.id)
-        .single();
+      // TODO: Uncomment when profiles table is created
+      // const { data, error } = await supabase
+      //   .from('profiles')
+      //   .select('*')
+      //   .eq('user_id', user.id)
+      //   .single();
 
-      if (error && error.code !== 'PGRST116') {
-        throw error;
-      }
+      // if (error && error.code !== 'PGRST116') {
+      //   throw error;
+      // }
 
-      if (data) {
-        setProfile(data);
-        setDisplayName(data.display_name || '');
-        setBio(data.bio || '');
-      }
+      // if (data) {
+      //   setProfile(data);
+      //   setDisplayName(data.display_name || '');
+      //   setBio(data.bio || '');
+      // }
     } catch (error) {
       console.error('Error fetching profile:', error);
     } finally {
@@ -69,19 +70,20 @@ export const Profile = ({ user }: ProfileProps) => {
   const updateProfile = async () => {
     setSaving(true);
     try {
-      const updates = {
-        user_id: user.id,
-        display_name: displayName,
-        bio: bio,
-      };
+      // TODO: Uncomment when profiles table is created
+      // const updates = {
+      //   user_id: user.id,
+      //   display_name: displayName,
+      //   bio: bio,
+      // };
 
-      const { error } = await supabase
-        .from('profiles')
-        .upsert(updates);
+      // const { error } = await supabase
+      //   .from('profiles')
+      //   .upsert(updates);
 
-      if (error) throw error;
+      // if (error) throw error;
 
-      await fetchProfile();
+      // await fetchProfile();
       setEditing(false);
       toast({
         title: t('profile.saved'),

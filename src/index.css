@@ -117,4 +117,23 @@ All colors MUST be HSL.
   body {
     @apply bg-background text-foreground;
   }
+
+  /* iOS Safe Area Support */
+  .ios-safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+  
+  .ios-safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  /* Ensure content doesn't go behind iOS status bar */
+  @supports (padding: max(0px)) {
+    .ios-safe-top {
+      padding-top: max(env(safe-area-inset-top), 0px);
+    }
+    .ios-safe-bottom {
+      padding-bottom: max(env(safe-area-inset-bottom), 0px);
+    }
+  }
 }
