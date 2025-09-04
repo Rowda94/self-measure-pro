@@ -70,6 +70,8 @@ const translations = {
     'auth.checkEmail': 'Check your email for the confirmation link!',
     'auth.invalidCredentials': 'Invalid email or password',
     'auth.signOut': 'Sign Out',
+    'auth.continueWithoutAccount': 'Continue without account',
+    'auth.guestMode': 'Guest Mode',
     
     // Profile
     'profile.editProfile': 'Edit Profile',
@@ -195,6 +197,8 @@ const translations = {
     'auth.checkEmail': 'Überprüfen Sie Ihre E-Mail für den Bestätigungslink!',
     'auth.invalidCredentials': 'Ungültige E-Mail oder Passwort',
     'auth.signOut': 'Abmelden',
+    'auth.continueWithoutAccount': 'Ohne Account fortfahren',
+    'auth.guestMode': 'Gast-Modus',
     
     // Profile
     'profile.editProfile': 'Profil bearbeiten',

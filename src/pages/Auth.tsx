@@ -132,11 +132,25 @@ export default function Auth() {
                   </Alert>
                 )}
                 
-                <Button type="submit" className="w-full bg-gradient-primary text-white border-0" disabled={loading}>
-                  {loading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Mail className="w-4 h-4 mr-2" />}
-                  {t('auth.signIn')}
-                </Button>
-              </form>
+                 <Button type="submit" className="w-full bg-gradient-primary text-white border-0" disabled={loading}>
+                   {loading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Mail className="w-4 h-4 mr-2" />}
+                   {t('auth.signIn')}
+                 </Button>
+                 
+                 <div className="text-center pt-4">
+                   <Button
+                     type="button"
+                     variant="outline"
+                     className="w-full"
+                     onClick={() => {
+                       localStorage.setItem('guestMode', 'true');
+                       navigate('/');
+                     }}
+                   >
+                     {t('auth.continueWithoutAccount')}
+                   </Button>
+                 </div>
+               </form>
             </TabsContent>
             
             <TabsContent value="signup">

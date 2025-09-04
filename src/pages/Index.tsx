@@ -21,6 +21,7 @@ const Index = () => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isGuestMode, setIsGuestMode] = useState(false);
   const { language, t } = useLanguage();
   const navigate = useNavigate();
 
@@ -28,11 +29,21 @@ const Index = () => {
   const challenges = language === 'de' ? germanChallenges : mockChallenges;
 
   useEffect(() => {
+    // Check for guest mode
+    const guestMode = localStorage.getItem('guestMode') === 'true';
+    setIsGuestMode(guestMode);
+
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
+      
+      // Clear guest mode if user logs in
+      if (session?.user) {
+        localStorage.removeItem('guestMode');
+        setIsGuestMode(false);
+      }
     });
 
     // Check for existing session
@@ -137,7 +148,20 @@ const Index = () => {
         ) : (
           <div className="text-center py-16">
             <h2 className="text-2xl font-bold mb-4">{t('profile.title')}</h2>
-            <p className="text-muted-foreground">{t('profile.desc')}</p>
+            <p className="text-muted-foreground mb-4">
+              {isGuestMode ? `${t('auth.guestMode')} - ${t('profile.desc')}` : t('profile.desc')}
+            </p>
+            {isGuestMode && (
+              <Button 
+                onClick={() => {
+                  localStorage.removeItem('guestMode');
+                  navigate('/auth');
+                }}
+                className="bg-gradient-primary text-white border-0"
+              >
+                {t('auth.signIn')}
+              </Button>
+            )}
           </div>
         );
       default:
@@ -156,7 +180,7 @@ const Index = () => {
     );
   }
 
-  if (!user) {
+  if (!user && !isGuestMode) {
     return (
       <div className="min-h-screen bg-gradient-subtle flex items-center justify-center p-4">
         <div className="text-center max-w-md">
